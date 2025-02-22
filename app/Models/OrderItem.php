@@ -16,6 +16,10 @@ class OrderItem extends Model
         'quantity'
     ];
 
+    protected $with = [
+        'product'
+    ];
+
 
     public function order(): BelongsTo
     {
