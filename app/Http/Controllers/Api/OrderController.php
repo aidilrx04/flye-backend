@@ -3,9 +3,13 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreOrderRequest;
 use App\Http\Resources\OrderResource;
 use App\Models\Order;
+use App\Models\OrderItem;
+use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class OrderController extends Controller
 {
@@ -14,7 +18,7 @@ class OrderController extends Controller
      */
     public function index()
     {
-        $orders = Order::with('items')->get();
+        $orders = Order::all();
 
         return OrderResource::collection($orders);
     }
@@ -22,9 +26,34 @@ class OrderController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreOrderRequest $request)
     {
-        //
+
+        $safe = $request->safe()->all();
+
+        $order = Order::create(['total' => 0]);
+
+        foreach ($safe['items'] as $item) {
+            $product = Product::find($item['product_id']);
+            $order_item = $order->items()->create([
+                'quantity' => $item['quantity'],
+                'product_id' => $item['product_id']
+            ]);
+            $ppq = $order_item->quantity * $product->price;
+            $order->total += $ppq;
+        }
+
+        $tax = $order->total * 0.08;
+        $order->total += $tax;
+        $order->save();
+
+        $order->refresh();
+
+
+        // load items to order model
+        $order->items;
+
+        return new OrderResource($order);
     }
 
     /**

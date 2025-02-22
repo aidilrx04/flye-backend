@@ -14,6 +14,8 @@ class Order extends Model
         'total'
     ];
 
+    protected $with = ['items'];
+
     public function items(): HasMany
     {
         return $this->hasMany(OrderItem::class);
