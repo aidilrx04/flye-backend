@@ -18,7 +18,7 @@ return new class extends Migration
             $table->double('price');
             $table->double('rating')->default(0);
             $table->json('image_urls');
-            $table->string('description');
+            $table->text('description');
             $table->string('tagline')->nullable();
 
             $table->timestamps();
