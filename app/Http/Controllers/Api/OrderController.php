@@ -6,10 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreOrderRequest;
 use App\Http\Resources\OrderResource;
 use App\Models\Order;
-use App\Models\OrderItem;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class OrderController extends Controller
 {
@@ -18,7 +18,9 @@ class OrderController extends Controller
      */
     public function index()
     {
-        $orders = Order::all();
+        $orders = QueryBuilder::for(Order::class)
+            ->allowedIncludes(['user'])
+            ->get();
 
         return OrderResource::collection($orders);
     }
@@ -59,9 +61,13 @@ class OrderController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Order $order)
     {
-        //
+        $order = QueryBuilder::for(Order::class)
+            ->allowedIncludes(['user'])
+            ->find($order->id);
+
+        return new OrderResource($order);
     }
 
     /**
