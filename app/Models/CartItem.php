@@ -16,7 +16,7 @@ class CartItem extends Model
         'quantity'
     ];
 
-    protected $with = ['product'];
+    protected $with = ['product', 'user'];
 
     public function user(): BelongsTo
     {
