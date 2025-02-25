@@ -7,9 +7,9 @@ use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 use App\Http\Resources\ProductResource;
 use App\Models\Product;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Spatie\QueryBuilder\AllowedFilter;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class ProductController extends Controller
 {
@@ -18,7 +18,21 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::paginate(9);
+        $products = QueryBuilder::for(Product::class)
+            ->allowedFilters([
+                AllowedFilter::exact('category'),
+                AllowedFilter::exact('id'),
+                'tagline',
+                'name',
+                'price',
+                'created_at',
+                'updated_at',
+                'description',
+                'rating'
+            ])
+            ->allowedSorts(['id', 'name', 'price', 'created_at', 'updated_at', 'category', 'tagline', 'description', 'rating'])
+            ->defaultSort('-created_at')
+            ->paginate(9);
 
         return ProductResource::collection($products);
     }
@@ -46,20 +60,12 @@ class ProductController extends Controller
             'description' => $safe['description'],
             'tagline' => $safe['tagline'],
             'rating' => 0,
+            'category' => $safe['category'],
             'image_urls' => $uploaded_image,
         ]);
-        // return product
+
 
         return new ProductResource($product);
-
-        return [
-            ...$safe,
-            'uploaded' => $uploaded_image
-        ];
-
-        // $product = Product::create($safe);
-
-        // return $product;
     }
 
     /**

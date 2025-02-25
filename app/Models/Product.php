@@ -16,7 +16,8 @@ class Product extends Model
         'rating',
         'price',
         'description',
-        'tagline'
+        'tagline',
+        'category'
     ];
 
     protected $casts = [

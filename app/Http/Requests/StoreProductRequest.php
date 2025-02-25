@@ -27,7 +27,8 @@ class StoreProductRequest extends FormRequest
             'images' => 'required|array',
             'images.*' => 'required|image',
             'description' => 'required|string',
-            'tagline' => 'required|string'
+            'tagline' => 'required|string',
+            'category' => 'required|in:MEN,WOMEN,KID,ACCESSORY'
         ];
     }
 }

@@ -20,6 +20,7 @@ return new class extends Migration
             $table->json('image_urls');
             $table->text('description');
             $table->string('tagline')->nullable();
+            $table->enum('category', ['MEN', 'WOMEN', 'KID', "ACCESSORY"]);
 
             $table->timestamps();
         });

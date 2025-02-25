@@ -22,7 +22,8 @@ class ProductFactory extends Factory
             'rating' => fake()->randomFloat(1, 0, 5),
             'image_urls' => collect([1, 1, 1])->map(fn() => "https://loremflickr.com/" . fake()->numberBetween(360, 1080) . "/" . fake()->numberBetween(360, 1080)),
             'description' => fake()->paragraph(),
-            'tagline' => fake()->words(10, true)
+            'tagline' => fake()->words(10, true),
+            'category' => fake()->randomElement(['MEN', 'WOMEN', 'KID', 'ACCESSORY'])
         ];
     }
 }
