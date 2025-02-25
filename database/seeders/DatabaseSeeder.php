@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\CartItem;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -30,7 +31,8 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             ProductSeeder::class,
-            OrderSeeder::class
+            OrderSeeder::class,
+            CartItemSeeder::class
         ]);
     }
 }
