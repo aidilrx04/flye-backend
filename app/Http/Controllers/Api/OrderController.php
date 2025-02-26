@@ -30,10 +30,11 @@ class OrderController extends Controller
      */
     public function store(StoreOrderRequest $request)
     {
+        $user = $request->user();
 
         $safe = $request->safe()->all();
 
-        $order = Order::create(['total' => 0]);
+        $order = $user->orders()->create(['total' => 0]);
 
         foreach ($safe['items'] as $item) {
             $product = Product::find($item['product_id']);
