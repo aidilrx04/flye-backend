@@ -32,18 +32,32 @@ class OrderController extends Controller
     {
         $user = $request->user();
 
-        $safe = $request->safe()->all();
+        $safe = $request->safe();
+
+        $cart_items = $user->cart_items()->whereIn('id', $safe->items)->get();
+
+        if ($cart_items->count() === 0) {
+            return response()->json([
+                'message' => 'No cart items found.'
+            ], 400);
+        }
 
         $order = $user->orders()->create(['total' => 0]);
 
-        foreach ($safe['items'] as $item) {
+
+        foreach ($cart_items as $item) {
             $product = Product::find($item['product_id']);
+
             $order_item = $order->items()->create([
-                'quantity' => $item['quantity'],
-                'product_id' => $item['product_id']
+                'quantity' => $item->quantity,
+                'product_id' => $item->product_id
             ]);
-            $ppq = $order_item->quantity * $product->price;
-            $order->total += $ppq;
+
+            $item_total = $order_item->quantity * $product->price;
+            $order->total += $item_total;
+
+            // remove cart item
+            $item->delete();
         }
 
         $tax = $order->total * 0.08;
