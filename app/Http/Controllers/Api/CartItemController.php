@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreBulkCartItemRequest;
 use App\Http\Requests\StoreCartItemRequest;
 use App\Http\Resources\CartItemResouce;
+use App\Models\CartItem;
 use Illuminate\Http\Request;
 use Spatie\QueryBuilder\QueryBuilder;
 
@@ -84,8 +85,9 @@ class CartItemController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(CartItem $cart)
     {
-        //
+        $cart->delete();
+        return response()->json(null, 204);
     }
 }
