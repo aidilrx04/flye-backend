@@ -20,6 +20,8 @@ class OrderFactory extends Factory
         return [
             'total' => fake()->randomFloat(2, 50, 250),
             'user_id' => User::inRandomOrder()->first(),
+            'shipping_address' => fake()->address(),
+            'status' => fake()->randomElement(['PENDING', 'PREPARING', 'DELIVERING', "DELIVERED", "COMPLETED"])
         ];
     }
 }
