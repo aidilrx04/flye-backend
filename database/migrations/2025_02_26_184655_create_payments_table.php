@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
 
             $table->unsignedBigInteger('order_id');
+            $table->double('amount');
             $table->string('method');
             $table->string('url');
             $table->enum('status', ['PENDING', 'SUCCESS', 'FAILED']);

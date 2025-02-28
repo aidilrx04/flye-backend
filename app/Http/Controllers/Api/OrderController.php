@@ -7,8 +7,8 @@ use App\Http\Requests\StoreOrderRequest;
 use App\Http\Resources\OrderResource;
 use App\Models\Order;
 use App\Models\Product;
+use App\Support\ToyyibPay\ToyyibPay;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class OrderController extends Controller
@@ -42,7 +42,10 @@ class OrderController extends Controller
             ], 400);
         }
 
-        $order = $user->orders()->create(['total' => 0]);
+        $order = $user->orders()->create([
+            'total' => 0,
+            'shipping_address' => $safe->shipping_address
+        ]);
 
 
         foreach ($cart_items as $item) {
@@ -66,9 +69,32 @@ class OrderController extends Controller
 
         $order->refresh();
 
+        // create bill for payment
+        $bill_code = ToyyibPay::create_bill(
+            "Flye Order #" . $order->id,
+            "Flye order at flye.com",
+            $order->total * 100,
+            "https://localhost:4200/order/status",
+            'https://aidil.dev',
+            $order->id,
+            now()->addHour(2)
+        );
+
+        $payment_url = env('TOYYIBPAY_URL') . '/' . $bill_code;
+
+
+        // create payment details
+        $payment = $order->payment()->create([
+            'amount' => $order->total,
+            'method' => 'toyyibpay',
+            'url' => $payment_url,
+            'valid_until' => now()->addHour(2),
+            'status' => 'PENDING'
+        ]);
 
         // load items to order model
         $order->items;
+        $order->payment;
 
         return new OrderResource($order);
     }

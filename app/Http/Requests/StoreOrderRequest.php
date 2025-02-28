@@ -23,7 +23,8 @@ class StoreOrderRequest extends FormRequest
     {
         return [
             'items' => 'required|array',
-            'items.*' => 'required|integer' // cart item id
+            'items.*' => 'required|integer', // cart item id,
+            'shipping_address' => 'required|string'
         ];
     }
 }

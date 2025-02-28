@@ -18,6 +18,7 @@ class PaymentFactory extends Factory
     public function definition(): array
     {
         return [
+            'amount' => fake()->numberBetween(20, 200),
             'method' => 'toyyibpay',
             'url' => fake()->url(),
             'status' => fake()->randomElement(['PENDING', 'SUCCESS', 'FAILED']),
