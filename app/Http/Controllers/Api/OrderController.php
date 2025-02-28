@@ -9,6 +9,7 @@ use App\Models\Order;
 use App\Models\Product;
 use App\Support\ToyyibPay\ToyyibPay;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class OrderController extends Controller
@@ -74,8 +75,8 @@ class OrderController extends Controller
             "Flye Order #" . $order->id,
             "Flye order at flye.com",
             $order->total * 100,
-            "https://localhost:4200/order/status",
-            'https://aidil.dev',
+            env('TOYYIBPAY_RETURN_URL'),
+            env('TOYYIBPAY_CALLBACK_URL', ''),
             $order->id,
             now()->addHour(2)
         );
@@ -125,5 +126,30 @@ class OrderController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function status(Request $request)
+    {
+        //TODO(aidil): Handle status gracefully
+        $status_id = $request->input('status_id');
+        $order_id = $request->input('order_id');
+
+        $order = Order::find($order_id);
+
+        if ($status_id != "1") {
+            return;
+        }
+
+        $order->update([
+            'status' => 'PREPARING'
+        ]);
+
+        $order->payment->update([
+            'status' => 'SUCCESS'
+        ]);
+
+        Log::info($order);
+
+        return;
     }
 }

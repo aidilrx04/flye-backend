@@ -23,6 +23,10 @@ Route::apiResource('products', ProductController::class);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('orders', OrderController::class);
+    Route::prefix('orders')->group(function () {
+        Route::post('status', [OrderController::class, 'status'])->name('orders.status');
+    });
+
     Route::prefix('carts')->group(function () {
         Route::post('bulkSave', [CartItemController::class, 'store_bulk'])->name('bulkSave');
     });
