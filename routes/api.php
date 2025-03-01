@@ -20,11 +20,10 @@ Route::prefix('auth')->group(function () {
     });
 });
 
-Route::apiResource('users', UserController::class)->except(['store']);
-
 Route::apiResource('products', ProductController::class);
 
 Route::middleware('auth:sanctum')->group(function () {
+    Route::apiResource('users', UserController::class)->except(['store']);
     Route::apiResource('orders', OrderController::class);
     Route::prefix('orders')->group(function () {
         Route::post('status', [OrderController::class, 'status'])->name('orders.status');
