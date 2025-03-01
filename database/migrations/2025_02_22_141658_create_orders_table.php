@@ -17,7 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id');
             $table->double('total');
             $table->text('shipping_address');
-            $table->enum('status', ['PENDING', 'PREPARING', 'DELIVERING', "DELIVERED", "COMPLETED"]);
+            $table->enum('status', ['PENDING', 'PREPARING', 'DELIVERING', "DELIVERED", "COMPLETED", "CANCELLED"]);
 
             $table->timestamps();
 
