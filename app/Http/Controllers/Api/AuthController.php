@@ -54,4 +54,13 @@ class AuthController extends Controller
 
         return $user;
     }
+
+    public function signOut(Request $request)
+    {
+        $user = $request->user();
+
+        $user->currentAccessToken()->delete();
+
+        return;
+    }
 }

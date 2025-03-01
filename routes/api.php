@@ -14,7 +14,10 @@ Route::get('unauthorized', function () {
 Route::prefix('auth')->group(function () {
     Route::post('signup', [AuthController::class, 'signUp']);
     Route::post('signin', [AuthController::class, 'signIn']);
-    Route::middleware('auth:sanctum')->post('verify', [AuthController::class, 'verify']);
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::post('verify', [AuthController::class, 'verify']);
+        Route::post('signout', [AuthController::class, 'signOut']);
+    });
 });
 
 Route::apiResource('users', UserController::class)->except(['store']);
