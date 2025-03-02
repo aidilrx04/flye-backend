@@ -25,7 +25,7 @@ class DatabaseSeeder extends Seeder
             'password' => '123'
         ]);
 
-        User::factory(10)->create();
+        User::factory(100)->create();
 
 
         $this->call([

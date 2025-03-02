@@ -8,12 +8,14 @@ use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class UserController extends Controller
 {
     public function index()
     {
-        $users = User::all();
+        $users = QueryBuilder::for(User::class)
+            ->paginate(10);
 
         return UserResource::collection($users);
     }
