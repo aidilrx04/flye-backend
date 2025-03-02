@@ -18,11 +18,11 @@ class OrderController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         $orders = QueryBuilder::for(Order::class)
             ->allowedIncludes(['user'])
-            ->get();
+            ->paginate(10);
 
         return OrderResource::collection($orders);
     }

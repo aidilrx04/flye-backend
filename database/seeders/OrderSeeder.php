@@ -15,14 +15,14 @@ class OrderSeeder extends Seeder
      */
     public function run(): void
     {
-        $amount = 10;
+        $amount = 100;
 
         $products = Product::all();
 
         for ($i = 0; $i < $amount; $i++) {
             Order::factory()->has(
                 OrderItem::factory()
-                    ->count(fake()->randomDigit()),
+                    ->count(fake()->numberBetween(1, 9)),
                 'items'
             )->create();
         }
