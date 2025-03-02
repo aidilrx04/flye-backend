@@ -20,7 +20,7 @@ Route::prefix('auth')->group(function () {
     });
 });
 
-Route::apiResource('products', ProductController::class);
+Route::apiResource('products', ProductController::class)->middlewareFor(['store', 'delete', 'update'], ['auth:sanctum']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('users', UserController::class)->except(['store']);

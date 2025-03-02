@@ -7,13 +7,15 @@ use App\Http\Requests\StoreUserRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Gate;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class UserController extends Controller
 {
     public function index()
     {
+        Gate::authorize('viewAny', User::class);
+
         $users = QueryBuilder::for(User::class)
             ->paginate(10);
 
@@ -24,6 +26,8 @@ class UserController extends Controller
 
     public function destroy(User $user)
     {
+        Gate::authorize('delete', $user);
+
         $user->delete();
 
         return;

@@ -7,6 +7,7 @@ use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 use App\Http\Resources\ProductResource;
 use App\Models\Product;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
@@ -42,6 +43,8 @@ class ProductController extends Controller
      */
     public function store(StoreProductRequest $request)
     {
+        Gate::authorize('create', Product::class);
+
         $safe = $request->safe();
 
         $uploaded_image = [];
@@ -81,6 +84,8 @@ class ProductController extends Controller
      */
     public function update(UpdateProductRequest $request, Product $product)
     {
+        Gate::authorize('update', $product);
+
         $safe = $request->safe();
 
         // remove old images
@@ -132,12 +137,7 @@ class ProductController extends Controller
 
 
         $product->save();
-        $product->update([
-            'name' => $safe->name,
-            'price' => $safe->price,
-            'description' => $safe->description,
-            'tagline' => $safe->tagline,
-        ]);
+        $product->update($safe->only(['name', 'price', 'description', 'tagline']));
 
         return new ProductResource($product);
     }
@@ -147,6 +147,8 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
+        Gate::authorize('delete', $product);
+
         $product->delete();
 
         return response()->json([
