@@ -13,7 +13,7 @@ class CartItemSeeder extends Seeder
      */
     public function run(): void
     {
-        $amount = 50;
+        $amount = 100;
 
         CartItem::factory($amount)->create();
     }
