@@ -22,6 +22,8 @@ Route::prefix('auth')->group(function () {
 
 Route::apiResource('products', ProductController::class)->middlewareFor(['store', 'delete', 'update'], ['auth:sanctum']);
 
+// Route::put('users/{user}', [UserController::class, 'update']);
+
 Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('users', UserController::class)->except(['store']);
     Route::apiResource('orders', OrderController::class);
