@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Product extends Model
 {
@@ -13,7 +14,6 @@ class Product extends Model
     protected $fillable = [
         'name',
         'image_urls',
-        'rating',
         'price',
         'description',
         'tagline',
@@ -24,8 +24,22 @@ class Product extends Model
         'image_urls' => 'array'
     ];
 
+    protected $with = [
+        'product_rating'
+    ];
+
     public function orderItems(): HasMany
     {
         return $this->hasMany(OrderItem::class);
+    }
+
+    public function product_rating(): HasOne
+    {
+        return $this->hasOne(ProductRating::class);
+    }
+
+    public function ratings(): HasMany
+    {
+        return $this->hasMany(Rating::class);
     }
 }

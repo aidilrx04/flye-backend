@@ -17,8 +17,6 @@ class OrderSeeder extends Seeder
     {
         $amount = 100;
 
-        $products = Product::all();
-
         for ($i = 0; $i < $amount; $i++) {
             Order::factory()->has(
                 OrderItem::factory()

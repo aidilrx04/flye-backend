@@ -18,7 +18,7 @@ class OrderItemFactory extends Factory
     public function definition(): array
     {
         return [
-            'product_id' => Product::inRandomOrder()->first(),
+            'product_id' => Product::withoutGlobalScopes()->inRandomOrder()->first(),
             'quantity' => fake()->numberBetween(1, 2)
         ];
     }

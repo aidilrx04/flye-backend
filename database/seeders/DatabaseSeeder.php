@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Auth;
 
 class DatabaseSeeder extends Seeder
 {
@@ -27,6 +28,8 @@ class DatabaseSeeder extends Seeder
             'role' => 'ADMIN'
         ]);
 
+        Auth::attempt(['email' => 'bob@mail.com', 'password' => '123']);
+
         User::factory(100)->create();
 
 
@@ -34,7 +37,8 @@ class DatabaseSeeder extends Seeder
             ProductSeeder::class,
             OrderSeeder::class,
             CartItemSeeder::class,
-            PaymentSeeder::class
+            PaymentSeeder::class,
+            RatingSeeder::class
         ]);
     }
 }
