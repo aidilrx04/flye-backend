@@ -25,7 +25,7 @@ class Product extends Model
     ];
 
     protected $with = [
-        'product_rating'
+        'rating'
     ];
 
     public function orderItems(): HasMany
@@ -33,7 +33,7 @@ class Product extends Model
         return $this->hasMany(OrderItem::class);
     }
 
-    public function product_rating(): HasOne
+    public function rating(): HasOne
     {
         return $this->hasOne(ProductRating::class);
     }

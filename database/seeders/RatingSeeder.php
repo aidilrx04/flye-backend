@@ -24,7 +24,7 @@ class RatingSeeder extends Seeder
             $rate_total = $product->ratings()->sum('rate');
             $rate_count = $product->ratings()->count();
 
-            $product->product_rating()->create([
+            $product->rating()->create([
                 'total_star' => $rate_total,
                 'total_rating' => $rate_count
             ]);
