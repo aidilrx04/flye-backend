@@ -17,6 +17,7 @@ class ProductResource extends JsonResource
         return [
             ...parent::toArray($request),
             'image_urls' => collect($this->image_urls)->map(fn($val) => strpos($val, 'http') !== false ? $val : url('/storage/' . $val)),
+            'sum_rating' => round($this->rating()->first()->total_star / $this->rating()->first()->total_rating, 1)
         ];
     }
 }
